@@ -10,6 +10,7 @@ final class CreateOrUpdateUserCommand implements SynchronousInterface
 {
     public function __construct(
         public string $email,
+        public string $plainPassword,
         public ?string $firstname = null,
         public ?string $lastname = null,
         public ?string $picture = null,
@@ -34,5 +35,10 @@ final class CreateOrUpdateUserCommand implements SynchronousInterface
     public function getEmail(): string
     {
         return $this->email;
+    }
+
+    public function getPlainPassword(): string
+    {
+        return $this->plainPassword;
     }
 }

@@ -25,7 +25,7 @@ class CreateOrUpdateUserCommandHandler
         if (null === $user) {
             $user = $this->commandBus->dispatch(new CreateUserCommand(
                 email: $command->getEmail(),
-                plainPassword: bin2hex(random_bytes(16)),
+                plainPassword: $command->getPlainPassword(),
                 firstname: $command->getFirstname(),
                 lastname: $command->getLastname(),
                 picture: $command->getPicture(),

@@ -19,11 +19,11 @@ class CreateUserCommandHandler
     public function __invoke(CreateUserCommand $command): User
     {
         $user = User::create(
+            plainPassword: $command->getPlainPassword(),
             firstname: $command->getFirstname(),
             lastname: $command->getLastname(),
             picture: $command->getPicture(),
             email: $command->getEmail(),
-            plainPassword: $command->getPlainPassword(),
         );
 
         $this->userRepository->save($user);
