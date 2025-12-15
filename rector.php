@@ -34,7 +34,6 @@ return RectorConfig::configure()
         rectorPreset: true,
         doctrineCodeQuality: true,
         symfonyCodeQuality: true,
-        symfonyConfigs: true,
     )
     ->withSets([
         LevelSetList::UP_TO_PHP_83,
