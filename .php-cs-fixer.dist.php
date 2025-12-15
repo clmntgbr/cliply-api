@@ -4,6 +4,8 @@ $finder = (new PhpCsFixer\Finder())
     ->in(__DIR__)
     ->exclude('var')
     ->exclude('vendor')
+    ->exclude('public') 
+    ->exclude('config')
     ->exclude('node_modules')
 ;
 

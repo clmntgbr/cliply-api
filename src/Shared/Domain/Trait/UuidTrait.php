@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Shared\Trait;
+namespace App\Shared\Domain\Trait;
 
 use ApiPlatform\Metadata\ApiProperty;
 use Doctrine\ORM\Mapping as ORM;

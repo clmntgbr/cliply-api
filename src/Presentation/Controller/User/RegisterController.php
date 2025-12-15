@@ -9,6 +9,7 @@ use App\Domain\User\Dto\RegisterPayload;
 use App\Domain\User\Entity\User;
 use App\Shared\Application\Bus\CommandBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
@@ -20,7 +21,8 @@ class RegisterController extends AbstractController
     public function __construct(
         private readonly CommandBusInterface $commandBus,
         private readonly NormalizerInterface $normalizer,
-        private readonly string $backendUrl,
+        #[Autowire('%env(DEFAULT_URI)%')]
+        private readonly string $defaultUri,
     ) {
     }
 
@@ -34,7 +36,7 @@ class RegisterController extends AbstractController
             plainPassword: $payload->getPlainPassword(),
             firstname: $payload->getFirstname(),
             lastname: $payload->getLastname(),
-            picture: $this->backendUrl . '/uploads/avatar.jpg',
+            picture: $this->defaultUri . '/uploads/avatar.jpg',
         ));
 
         return new JsonResponse([
