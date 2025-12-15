@@ -26,7 +26,7 @@ class CreateUserCommandHandler
             email: $command->getEmail(),
         );
 
-        $this->userRepository->save($user);
+        $this->userRepository->save($user, true);
 
         return $user;
     }

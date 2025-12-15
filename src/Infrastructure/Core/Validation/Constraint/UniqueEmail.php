@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Infrastructure\Validation\Constraint;
+namespace App\Infrastructure\Core\Validation\Constraint;
 
 use Attribute;
 use Override;

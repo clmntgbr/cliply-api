@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\User\Dto;
 
-use App\Infrastructure\Validation\Constraint\UniqueEmail;
+use App\Infrastructure\Core\Validation\Constraint\UniqueEmail;
 use Symfony\Component\Serializer\Attribute\SerializedName;
 use Symfony\Component\Validator\Constraints as Assert;
 

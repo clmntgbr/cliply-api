@@ -85,7 +85,7 @@ abstract class AbstractRepository extends ServiceEntityRepository
     private function getIdentifier(object $entity): ?string
     {
         if (method_exists($entity, 'getId')) {
-            return $entity->getId();
+            return (string) $entity->getId();
         }
 
         return null;

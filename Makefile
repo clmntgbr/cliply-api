@@ -74,3 +74,6 @@ php-cs-fixer: ## Run php-cs-fixer
 
 qa: ## Run all qa tools
 	@$(PHP_CONT) composer qa-fix
+
+jwt:
+	@$(PHP_CONT) bin/console lexik:jwt:generate-keypair --skip-if-exists
