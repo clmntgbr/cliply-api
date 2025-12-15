@@ -2,27 +2,53 @@
 
 declare(strict_types=1);
 
+use Rector\CodeQuality\Rector\Catch_\ThrowWithPreviousExceptionRector;
+use Rector\CodeQuality\Rector\FuncCall\SimplifyRegexPatternRector;
+use Rector\CodeQuality\Rector\Identical\FlipTypeControlToUseExclusiveTypeRector;
+use Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector;
+use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
+use Rector\CodingStyle\Rector\FuncCall\CountArrayToEmptyArrayComparisonRector;
+use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
 use Rector\Config\RectorConfig;
-use Rector\TypeDeclaration\Rector\ClassMethod\AddVoidReturnTypeWhereNoReturnRector;
+use Rector\Set\ValueObject\LevelSetList;
 
 return RectorConfig::configure()
+    ->withParallel()
     ->withPaths([
-        __DIR__.'/src',
+        __DIR__ . '/src',
     ])
-    ->withSkip([
-        __DIR__.'/var',
-        __DIR__.'/vendor',
-    ])
-    ->withPhpSets(php84: true)
+    ->withPhpSets(
+        php83: true,
+    )
+    ->withAttributesSets(
+        symfony: true,
+        doctrine: true,
+    )
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
+        codingStyle: true,
         typeDeclarations: true,
         privatization: true,
-        earlyReturn: true,
-        strictBooleans: true
+        strictBooleans: true,
+        rectorPreset: true,
+        doctrineCodeQuality: true,
+        symfonyCodeQuality: true,
+        symfonyConfigs: true,
     )
-    ->withRules([
-        AddVoidReturnTypeWhereNoReturnRector::class,
+    ->withSets([
+        LevelSetList::UP_TO_PHP_83,
     ])
-    ->withImportNames();
+    ->withImportNames(
+        importShortClasses: false,
+        removeUnusedImports: true,
+    )
+    ->withSkip([
+        FlipTypeControlToUseExclusiveTypeRector::class,
+        ThrowWithPreviousExceptionRector::class,
+        SimplifyRegexPatternRector::class,
+        NewlineAfterStatementRector::class,
+        CountArrayToEmptyArrayComparisonRector::class,
+        EncapsedStringsToSprintfRector::class,
+        CatchExceptionNameMatchingTypeRector::class,
+    ]);

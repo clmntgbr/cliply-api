@@ -62,3 +62,15 @@ entity: ## Create a new entity
 
 schema: ## Update database schema
 	@$(PHP_CONT) bin/console doctrine:schema:update --force
+
+rector: ## Run rector
+	@$(PHP_CONT) composer rector-fix
+
+phpstan: ## Run phpstan
+	@$(PHP_CONT) composer phpstan
+
+php-cs-fixer: ## Run php-cs-fixer
+	@$(PHP_CONT) composer cs-fix
+
+qa: ## Run all qa tools
+	@$(PHP_CONT) composer qa-fix

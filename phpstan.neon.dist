@@ -1,11 +1,7 @@
-includes:
-    - vendor/phpstan/phpstan-symfony/extension.neon
-
 parameters:
     level: 6
+    treatPhpDocTypesAsCertain: false
     paths:
-        - src
-    excludePaths:
-        - var
-        - vendor
-
+        - bin/
+        - public/
+        - src/

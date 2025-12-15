@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 // This file is auto-generated and is for apps only. Bundles SHOULD NOT rely on its content.
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
@@ -325,7 +327,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         }>,
  *     },
  *     validation?: bool|array{ // Validation configuration
- *         enabled?: bool, // Default: false
+ *         enabled?: bool, // Default: true
  *         enable_attributes?: bool, // Default: true
  *         static_method?: list<scalar|null>,
  *         translation_domain?: scalar|null, // Default: "validators"
@@ -417,7 +419,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         resources?: array<string, scalar|null>,
  *     },
  *     messenger?: bool|array{ // Messenger configuration
- *         enabled?: bool, // Default: false
+ *         enabled?: bool, // Default: true
  *         routing?: array<string, array{ // Default: []
  *             senders?: list<scalar|null>,
  *         }>,
@@ -636,7 +638,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         }>,
  *     },
  *     uid?: bool|array{ // Uid configuration
- *         enabled?: bool, // Default: false
+ *         enabled?: bool, // Default: true
  *         default_uuid_version?: 7|6|4|1, // Default: 7
  *         name_based_uuid_version?: 5|3, // Default: 5
  *         name_based_uuid_namespace?: scalar|null,
