@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Clip\Command;
+namespace App\Application\Storage\Command;
 
-use App\Application\Storage\Command\UploadThumbnailCommand;
 use App\Infrastructure\Storage\S3\S3StorageServiceInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
