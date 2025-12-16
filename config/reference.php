@@ -1684,6 +1684,22 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         cache?: scalar|null, // Storage to track blocked tokens // Default: "cache.app"
  *     },
  * }
+ * @psalm-type FlysystemConfig = array{
+ *     storages?: array<string, array{ // Default: []
+ *         adapter: scalar|null,
+ *         options?: list<mixed>,
+ *         visibility?: scalar|null, // Default: null
+ *         directory_visibility?: scalar|null, // Default: null
+ *         retain_visibility?: bool|null, // Default: null
+ *         case_sensitive?: bool, // Default: true
+ *         disable_asserts?: bool, // Default: false
+ *         public_url?: list<scalar|null>,
+ *         path_normalizer?: scalar|null, // Default: null
+ *         public_url_generator?: scalar|null, // Default: null
+ *         temporary_url_generator?: scalar|null, // Default: null
+ *         read_only?: bool, // Default: false
+ *     }>,
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1698,6 +1714,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *     api_platform?: ApiPlatformConfig,
  *     stof_doctrine_extensions?: StofDoctrineExtensionsConfig,
  *     lexik_jwt_authentication?: LexikJwtAuthenticationConfig,
+ *     flysystem?: FlysystemConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1713,6 +1730,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         api_platform?: ApiPlatformConfig,
  *         stof_doctrine_extensions?: StofDoctrineExtensionsConfig,
  *         lexik_jwt_authentication?: LexikJwtAuthenticationConfig,
+ *         flysystem?: FlysystemConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1728,6 +1746,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         api_platform?: ApiPlatformConfig,
  *         stof_doctrine_extensions?: StofDoctrineExtensionsConfig,
  *         lexik_jwt_authentication?: LexikJwtAuthenticationConfig,
+ *         flysystem?: FlysystemConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1743,6 +1762,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         api_platform?: ApiPlatformConfig,
  *         stof_doctrine_extensions?: StofDoctrineExtensionsConfig,
  *         lexik_jwt_authentication?: LexikJwtAuthenticationConfig,
+ *         flysystem?: FlysystemConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,
