@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Presentation\Controller\User;
+namespace App\Presentation\Controller\Clip;
 
 use App\Application\Clip\Command\CreateClipFromUrlCommand;
 use App\Domain\Clip\Dto\CreateClipFromUrlPayload;

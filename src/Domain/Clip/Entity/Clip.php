@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Domain\Clip\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Post;
 use App\Domain\Clip\Enum\ClipStatus;
 use App\Domain\Clip\Repository\ClipRepository;
 use App\Domain\Video\Entity\Video;
+use App\Presentation\Controller\Clip\CreateClipFromFileController;
+use App\Presentation\Controller\Clip\CreateClipFromUrlController;
 use App\Shared\Domain\Trait\UuidTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +18,18 @@ use Gedmo\Timestampable\Traits\TimestampableEntity;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: ClipRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Post(
+            uriTemplate: '/clips/url',
+            controller: CreateClipFromUrlController::class,
+        ),
+        new Post(
+            uriTemplate: '/clips/file',
+            controller: CreateClipFromFileController::class,
+        ),
+    ]
+)]
 class Clip
 {
     use UuidTrait;

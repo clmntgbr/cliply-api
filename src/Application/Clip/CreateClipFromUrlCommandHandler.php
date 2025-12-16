@@ -8,7 +8,6 @@ use App\Application\Storage\Command\UploadThumbnailCommand;
 use App\Application\Video\Command\CreateVideoFromUrlCommand;
 use App\Domain\Clip\Entity\Clip;
 use App\Domain\Clip\Repository\ClipRepository;
-use App\Domain\Video\Entity\Video;
 use App\Shared\Application\Bus\CommandBusInterface;
 use App\Shared\Utils\ConvertBase64ToFile;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

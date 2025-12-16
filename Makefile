@@ -15,7 +15,7 @@ help: ## Outputs this help screen
 ## —— Docker 🐳 ————————————————————————————————————————————————————————————————
 build: ## Build the docker images
 	@$(DOCKER_COMP) build --pull --no-cache
-	
+
 up: ## Start the docker hub in detached mode (no logs)
 	@$(DOCKER_COMP) up -d --wait
 
@@ -80,3 +80,6 @@ qa: ## Run all qa tools
 
 jwt:
 	@$(PHP_CONT) bin/console lexik:jwt:generate-keypair --skip-if-exists
+
+consume: ## Start the consumer
+	@$(PHP_CONT) bin/console messenger:consume async.priority async core  -vv

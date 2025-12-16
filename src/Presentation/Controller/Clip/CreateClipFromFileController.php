@@ -30,7 +30,6 @@ class CreateClipFromFileController extends AbstractController
         #[MapRequestPayload()]
         CreateClipFromFilePayload $payload,
     ): JsonResponse {
-
         $this->commandBus->dispatch(new CreateClipFromFileCommand(
             video: $file,
             thumbnail: $thumbnail,
