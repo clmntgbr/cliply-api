@@ -31,6 +31,13 @@ services:
     ports:
       - "9002:5672"
       - "9003:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST}
+      RABBITMQ_USER: ${RABBITMQ_USER}
+      RABBITMQ_PASS: ${RABBITMQ_PASSWORD}
+      RABBITMQ_VHOST: ${RABBITMQ_VHOST}
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "ping"]
       interval: 30s
@@ -90,6 +97,12 @@ services:
           sleep 15;
           /scripts/setup-minio.sh;
           "
+      environment:
+          MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minioadmin}
+          MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-minioadmin123}
+          MINIO_USER: ${MINIO_USER:-substream}
+          MINIO_PASSWORD: ${MINIO_PASSWORD:-substream123}
+          S3_BUCKET_NAME: ${S3_BUCKET_NAME:-app-bucket}
 
 volumes:
   caddy_data:
