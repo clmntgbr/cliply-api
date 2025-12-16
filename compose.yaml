@@ -4,9 +4,6 @@ services:
     container_name: api
     image: ${IMAGES_PREFIX:-}app-php
     restart: unless-stopped
-    env_file:
-      - .env
-      - .env.local
     volumes:
       - caddy_data:/data
       - caddy_config:/config
@@ -29,9 +26,6 @@ services:
     restart: unless-stopped
     image: rabbitmq:3-management
     hostname: rabbitmq
-    env_file:
-      - .env
-      - .env.local
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq/mnesia/rabbit@my-rabbit
     ports:
@@ -47,23 +41,23 @@ services:
   database:
     container_name: datastore
     image: postgres:${POSTGRES_VERSION:-16}-alpine
-    env_file:
-      - .env
-      - .env.local
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
       timeout: 5s
       retries: 5
       start_period: 60s
+    ports:
+      - "9543:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
+      POSTGRES_USER: ${POSTGRES_USER:-app}
     volumes:
       - database_data:/var/lib/postgresql/data:rw
 
   minio:
       container_name: s3
       image: minio/minio:latest
-      env_file:
-          - .env
-          - .env.local
       ports:
           - '9004:9000'
           - '9005:9001'
@@ -81,9 +75,6 @@ services:
   minio-setup:
       container_name: s3-setup
       image: minio/mc:latest
-      env_file:
-          - .env
-          - .env.local
       depends_on:
           minio:
               condition: service_healthy
