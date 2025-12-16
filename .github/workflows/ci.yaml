@@ -26,6 +26,8 @@ jobs:
           persist-credentials: false
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      - name: Create .env.local
+        run: cp .env .env.local
       - name: Build Docker images
         uses: docker/bake-action@v6
         with:
@@ -39,8 +41,6 @@ jobs:
             *.cache-from=type=gha,scope=${{github.ref}}
             *.cache-from=type=gha,scope=refs/heads/main
             *.cache-to=type=gha,scope=${{github.ref}},mode=max
-      - name: Create .env.local
-        run: cp .env .env.local
       - name: Start services
         run: docker compose up --wait --no-build
       - name: Check HTTP reachability
@@ -73,6 +73,8 @@ jobs:
           persist-credentials: false
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      - name: Create .env.local
+        run: cp .env .env.local
       - name: Build Docker images
         uses: docker/bake-action@v6
         with:
@@ -86,8 +88,6 @@ jobs:
             *.cache-from=type=gha,scope=${{github.ref}}
             *.cache-from=type=gha,scope=refs/heads/main
             *.cache-to=type=gha,scope=${{github.ref}},mode=max
-      - name: Create .env.local
-        run: cp .env .env.local
       - name: Start services
         run: docker compose up --wait --no-build
       - name: Run PHPStan
@@ -103,6 +103,8 @@ jobs:
           persist-credentials: false
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      - name: Create .env.local
+        run: cp .env .env.local
       - name: Build Docker images
         uses: docker/bake-action@v6
         with:
@@ -116,8 +118,6 @@ jobs:
             *.cache-from=type=gha,scope=${{github.ref}}
             *.cache-from=type=gha,scope=refs/heads/main
             *.cache-to=type=gha,scope=${{github.ref}},mode=max
-      - name: Create .env.local
-        run: cp .env .env.local
       - name: Start services
         run: docker compose up --wait --no-build
       - name: Run PHP CS Fixer
@@ -133,6 +133,8 @@ jobs:
           persist-credentials: false
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
+      - name: Create .env.local
+        run: cp .env .env.local
       - name: Build Docker images
         uses: docker/bake-action@v6
         with:
@@ -146,8 +148,6 @@ jobs:
             *.cache-from=type=gha,scope=${{github.ref}}
             *.cache-from=type=gha,scope=refs/heads/main
             *.cache-to=type=gha,scope=${{github.ref}},mode=max
-      - name: Create .env.local
-        run: cp .env .env.local
       - name: Start services
         run: docker compose up --wait --no-build
       - name: Run Rector
