@@ -1,7 +1,7 @@
 ---
 services:
   php:
-    container_name: php
+    container_name: api
     image: ${IMAGES_PREFIX:-}app-php
     restart: unless-stopped
     environment:
@@ -28,7 +28,7 @@ services:
         protocol: udp
 
   rabbitmq:
-    container_name: rmq
+    container_name: broker
     restart: unless-stopped
     image: rabbitmq:3-management
     hostname: rabbitmq
@@ -52,7 +52,7 @@ services:
       start_period: 30s
 
   database:
-    container_name: db
+    container_name: datastore
     image: postgres:${POSTGRES_VERSION:-16}-alpine
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-app}
