@@ -4,12 +4,9 @@ services:
     container_name: api
     image: ${IMAGES_PREFIX:-}app-php
     restart: unless-stopped
-    environment:
-      SERVER_NAME: ${SERVER_NAME:-localhost}, php:80
-      DEFAULT_URI: https://${SERVER_NAME:-localhost}:${HTTPS_PORT:-443}
-      MERCURE_PUBLISHER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
-      MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-!ChangeThisMercureHubJWTSecretKey!}
-      DATABASE_URL: postgresql://${POSTGRES_USER:-app}:${POSTGRES_PASSWORD:-!ChangeMe!}@database:5432/${POSTGRES_DB:-app}?serverVersion=${POSTGRES_VERSION:-15}&charset=${POSTGRES_CHARSET:-utf8}
+    env_file:
+      - .env
+      - .env.local
     volumes:
       - caddy_data:/data
       - caddy_config:/config
@@ -32,13 +29,9 @@ services:
     restart: unless-stopped
     image: rabbitmq:3-management
     hostname: rabbitmq
-    environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASS}
-      RABBITMQ_DEFAULT_VHOST: ${RABBITMQ_VHOST}
-      RABBITMQ_USER: ${RABBITMQ_USER}
-      RABBITMQ_PASS: ${RABBITMQ_PASS}
-      RABBITMQ_VHOST: ${RABBITMQ_VHOST}
+    env_file:
+      - .env
+      - .env.local
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq/mnesia/rabbit@my-rabbit
     ports:
@@ -54,10 +47,9 @@ services:
   database:
     container_name: datastore
     image: postgres:${POSTGRES_VERSION:-16}-alpine
-    environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
+    env_file:
+      - .env
+      - .env.local
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
       timeout: 5s
@@ -66,8 +58,47 @@ services:
     volumes:
       - database_data:/var/lib/postgresql/data:rw
 
+  minio:
+      container_name: s3
+      image: minio/minio:latest
+      env_file:
+          - .env
+          - .env.local
+      ports:
+          - '9004:9000'
+          - '9005:9001'
+      volumes:
+          - minio_data:/data/minio
+      command: 'minio server /data/minio --console-address ":9001"'
+      healthcheck:
+          test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+          interval: 30s
+          timeout: 20s
+          retries: 3
+          start_period: 30s
+      restart: unless-stopped
+  
+  minio-setup:
+      container_name: s3-setup
+      image: minio/mc:latest
+      env_file:
+          - .env
+          - .env.local
+      depends_on:
+          minio:
+              condition: service_healthy
+      volumes:
+          - ./scripts:/scripts
+      entrypoint: >
+          /bin/sh -c "
+          chmod +x /scripts/setup-minio.sh;
+          sleep 15;
+          /scripts/setup-minio.sh;
+          "
+
 volumes:
   caddy_data:
   caddy_config:
   rabbitmq_data:
   database_data:
+  minio_data:

@@ -33,6 +33,7 @@ class CreateClipFromUrlCommandHandler
 
         /** @var Video $video */
         $video = $this->commandBus->dispatch(new CreateVideoFromUrlCommand(
+            originalName: $command->getOriginalName(),
             url: $command->getUrl(),
         ));
 

@@ -9,9 +9,15 @@ use App\Shared\Application\Command\SynchronousInterface;
 final class CreateClipFromUrlCommand implements SynchronousInterface
 {
     public function __construct(
+        public string $originalName,
         public string $url,
         public string $thumbnail,
     ) {
+    }
+
+    public function getOriginalName(): string
+    {
+        return $this->originalName;
     }
 
     public function getUrl(): string

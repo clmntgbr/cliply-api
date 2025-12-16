@@ -11,6 +11,10 @@ class CreateClipFromUrlPayload
 {
     public function __construct(
         #[Assert\NotBlank]
+        #[Assert\Length(max: 255)]
+        #[Assert\Type('string')]
+        private readonly string $originalName,
+        #[Assert\NotBlank]
         #[Assert\Url]
         #[Assert\Length(max: 2048)]
         #[Assert\Regex(pattern: '/^https?:\/\/.+$/i', message: 'Invalid URL')]
@@ -21,6 +25,11 @@ class CreateClipFromUrlPayload
         #[Assert\Regex(pattern: '/^data:image\/(jpeg|jpg|png|gif|webp);base64,/', message: 'Invalid base64 image format')]
         private readonly string $thumbnail,
     ) {
+    }
+
+    public function getOriginalName(): string
+    {
+        return $this->originalName;
     }
 
     public function getUrl(): string

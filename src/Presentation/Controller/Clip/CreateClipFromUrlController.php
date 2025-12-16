@@ -23,6 +23,7 @@ class CreateClipFromUrlController extends AbstractController
     public function __invoke(#[MapRequestPayload()] CreateClipFromUrlPayload $payload): JsonResponse
     {
         $this->commandBus->dispatch(new CreateClipFromUrlCommand(
+            originalName: $payload->getOriginalName(),
             url: $payload->getUrl(),
             thumbnail: $payload->getThumbnail(),
         ));

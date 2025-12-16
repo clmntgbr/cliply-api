@@ -20,8 +20,8 @@ class Video
     use UuidTrait;
     use TimestampableEntity;
 
-    #[ORM\Column(type: Types::STRING)]
-    private string $name;
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    private ?string $name = null;
 
     #[ORM\Column(type: Types::STRING)]
     private string $originalName;
@@ -43,9 +43,10 @@ class Video
         $this->id = Uuid::v7();
     }
 
-    public static function createFromUrl(string $url): self
+    public static function createFromUrl(string $originalName, string $url): self
     {
         $video = new self();
+        $video->originalName = $originalName;
         $video->url = $url;
 
         return $video;

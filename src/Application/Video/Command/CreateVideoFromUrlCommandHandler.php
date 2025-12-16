@@ -19,6 +19,7 @@ class CreateVideoFromUrlCommandHandler
     public function __invoke(CreateVideoFromUrlCommand $command): Video
     {
         $video = Video::createFromUrl(
+            originalName: $command->getOriginalName(),
             url: $command->getUrl(),
         );
 
