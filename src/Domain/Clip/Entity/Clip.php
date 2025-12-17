@@ -57,11 +57,11 @@ class Clip
     #[Groups(['clip:read'])]
     private string $status;
 
-    #[ORM\Column(type: Types::JSON)]
-    #[Groups(['clip:read'])]
     /**
      * @var list<string>
      */
+    #[ORM\Column(type: Types::JSON)]
+    #[Groups(['clip:read'])]
     private array $statuses = [];
 
     public function __construct()

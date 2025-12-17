@@ -28,8 +28,21 @@ if [ $RECTOR_EXIT -ne 0 ]; then
     echo ""
 fi
 
+# Run PHPStan check
+echo ""
+echo "🔎 Running static analysis with PHPStan..."
+docker compose exec -T php composer phpstan
+PHPSTAN_EXIT=$?
+
+if [ $PHPSTAN_EXIT -ne 0 ]; then
+    echo ""
+    echo "❌ PHPStan found issues!"
+    echo "💡 Fix the issues reported above"
+    echo ""
+fi
+
 # Exit with error if any check failed
-if [ $CS_FIXER_EXIT -ne 0 ] || [ $RECTOR_EXIT -ne 0 ]; then
+if [ $CS_FIXER_EXIT -ne 0 ] || [ $RECTOR_EXIT -ne 0 ] || [ $PHPSTAN_EXIT -ne 0 ]; then
     echo "❌ Commit aborted due to code quality issues"
     echo ""
     exit 1
