@@ -30,7 +30,7 @@ sh: ## Connect to the PHP container
 
 trust-cert: ## Install local SSL certificate
 	@echo "Installing local SSL certificate..."
-	@docker cp php:/data/caddy/pki/authorities/local/root.crt /tmp/root.crt
+	@docker cp api:/data/caddy/pki/authorities/local/root.crt /tmp/root.crt
 	@if [ "$$(uname)" = "Darwin" ]; then \
 		echo "Detected macOS. Installing certificate..."; \
 		sudo security add-trusted-cert -d -r trustRoot -k /Library/Keychains/System.keychain /tmp/root.crt; \
