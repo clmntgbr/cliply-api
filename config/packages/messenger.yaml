@@ -60,7 +60,11 @@ framework:
                     exchange:
                         name: 'core'
                         type: 'direct'
-                    queues: ~
+                    queues: 
+                        core.download_video:
+                            binding_keys: [core.download_video]
+                        core.extract_sound:
+                            binding_keys: [core.extract_sound]
                 retry_strategy:
                     max_retries: 0
 

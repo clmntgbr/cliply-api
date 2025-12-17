@@ -82,4 +82,12 @@ jwt:
 	@$(PHP_CONT) bin/console lexik:jwt:generate-keypair --skip-if-exists
 
 consume: ## Start the consumer
-	@$(PHP_CONT) bin/console messenger:consume async.priority async core  -vv
+	@$(PHP_CONT) bin/console messenger:consume async.priority async -vv
+
+fabric:
+	@$(PHP_CONT) bin/console messenger:setup-transports
+
+db: ## Start the database
+	@$(PHP_CONT) bin/console doctrine:database:drop -f --if-exists
+	@$(PHP_CONT) bin/console doctrine:database:create
+	@$(PHP_CONT) bin/console doctrine:schema:update -f

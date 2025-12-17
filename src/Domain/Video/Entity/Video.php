@@ -11,6 +11,7 @@ use App\Shared\Domain\Trait\UuidTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: VideoRepository::class)]
@@ -24,6 +25,7 @@ class Video
     private ?string $name = null;
 
     #[ORM\Column(type: Types::STRING)]
+    #[Groups(['video:read'])]
     private string $originalName;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]

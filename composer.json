@@ -41,6 +41,7 @@
         "symfony/twig-bundle": "8.0.*",
         "symfony/uid": "8.0.*",
         "symfony/validator": "8.0.*",
+        "symfony/workflow": "8.0.*",
         "symfony/yaml": "8.0.*",
         "thecodingmachine/safe": "^3.3"
     },

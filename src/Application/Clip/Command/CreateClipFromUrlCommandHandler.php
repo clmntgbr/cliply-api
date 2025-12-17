@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Clip\Command;
 
+use App\Application\Core\Command\DownloadVideoCommand;
 use App\Application\Storage\Command\UploadThumbnailCommand;
 use App\Application\Video\Command\CreateVideoFromUrlCommand;
 use App\Domain\Clip\Entity\Clip;
@@ -41,6 +42,11 @@ class CreateClipFromUrlCommandHandler
         $clip->setThumbnail($thumbnailFileName);
 
         $this->clipRepository->save($clip, true);
+
+        $this->commandBus->dispatch(new DownloadVideoCommand(
+            clipId: $clip->getId(),
+            url: $command->getUrl(),
+        ));
 
         return $clip;
     }

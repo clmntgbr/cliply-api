@@ -1,0 +1,49 @@
+framework:
+    workflows:
+        clips:
+            type: 'state_machine'
+            marking_store:
+                type: 'method'
+                property: 'status'
+            supports:
+                - App\Domain\Clip\Entity\Clip
+            initial_marking: draft
+            places:
+                - draft
+                - processing
+
+                - downloading
+                - downloading_failed
+                - downloading_completed
+
+                - extracting_sound
+                - extracting_sound_failed
+                - extracting_sound_completed
+
+            transitions:
+                downloading:
+                    from: draft
+                    to:   downloading
+                downloading_failed:
+                    from: downloading
+                    to:   downloading_failed
+                downloading_completed:
+                    from: downloading
+                    to:   downloading_completed
+
+                processing:
+                    from: downloading_completed
+                    to:   processing
+                processing_no_download:
+                    from: draft
+                    to:   processing
+
+                extracting_sound:
+                    from: processing
+                    to:   extracting_sound
+                extracting_sound_failed:
+                    from: extracting_sound
+                    to:   extracting_sound_failed
+                extracting_sound_completed:
+                    from: extracting_sound
+                    to:   extracting_sound_completed

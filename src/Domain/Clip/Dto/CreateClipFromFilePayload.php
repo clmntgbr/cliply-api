@@ -14,7 +14,6 @@ class CreateClipFromFilePayload
         #[Assert\Length(min: 3, max: 255, minMessage: 'Original name must be at least {{ limit }} characters', maxMessage: 'Original name cannot be longer than {{ limit }} characters')]
         public string $originalName,
         #[Assert\NotBlank(message: 'Format is required')]
-        #[Assert\Choice(callback: [VideoFormat::class, 'values'])]
         public VideoFormat $format,
     ) {
     }
