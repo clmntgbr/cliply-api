@@ -16,8 +16,8 @@ use function Safe\json_encode;
 class JsonMessageSerializer implements SerializerInterface
 {
     public function __construct(
-        #[Autowire('%env(DEFAULT_URI)%')]
-        private readonly string $defaultUri,
+        #[Autowire('%env(WEBHOOK_URI)%')]
+        private readonly string $webhookUri,
     ) {
     }
 
@@ -45,8 +45,8 @@ class JsonMessageSerializer implements SerializerInterface
         $data = [
             'class' => $message::class,
             'payload' => $message->jsonSerialize(),
-            'webhook_url_success' => $this->defaultUri . '/' . $message->getWebhookUrlSuccess(),
-            'webhook_url_failure' => $this->defaultUri . '/' . $message->getWebhookUrlFailure(),
+            'webhook_url_success' => $this->webhookUri . '/' . $message->getWebhookUrlSuccess(),
+            'webhook_url_failure' => $this->webhookUri . '/' . $message->getWebhookUrlFailure(),
         ];
 
         return [

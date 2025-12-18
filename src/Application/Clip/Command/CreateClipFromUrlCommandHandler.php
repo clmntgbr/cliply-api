@@ -45,7 +45,6 @@ class CreateClipFromUrlCommandHandler
 
         $this->commandBus->dispatch(new DownloadVideoCommand(
             clipId: $clip->getId(),
-            url: $command->getUrl(),
         ));
 
         return $clip;

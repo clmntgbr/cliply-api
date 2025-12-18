@@ -43,6 +43,7 @@ class CreateClipFromFileCommandHandler
         $video = $this->commandBus->dispatch(new CreateVideoFromFileCommand(
             originalName: $command->getOriginalName(),
             fileName: $videoFileName,
+            size: $command->getVideo()->getSize(),
             format: $command->getFormat(),
         ));
 

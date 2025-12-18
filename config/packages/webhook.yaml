@@ -1,0 +1,9 @@
+framework:
+  webhook:
+    routing:
+      downloadvideosuccess:
+        service: App\Presentation\Webhook\Core\DownloadVideoSuccessRequestParser
+        secret: '%env(CORE_TOKEN)%'
+      downloadvideofailure:
+        service: App\Presentation\Webhook\Core\DownloadVideoFailureRequestParser
+        secret: '%env(CORE_TOKEN)%'

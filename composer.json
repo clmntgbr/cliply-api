@@ -33,6 +33,7 @@
         "symfony/mailer": "8.0.*",
         "symfony/mercure-bundle": "^0.4.2",
         "symfony/messenger": "8.0.*",
+        "symfony/monolog-bundle": "^4.0",
         "symfony/property-access": "8.0.*",
         "symfony/property-info": "8.0.*",
         "symfony/runtime": "8.0.*",
@@ -41,6 +42,7 @@
         "symfony/twig-bundle": "8.0.*",
         "symfony/uid": "8.0.*",
         "symfony/validator": "8.0.*",
+        "symfony/webhook": "8.0.*",
         "symfony/workflow": "8.0.*",
         "symfony/yaml": "8.0.*",
         "thecodingmachine/safe": "^3.3"

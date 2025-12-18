@@ -46,7 +46,7 @@ class Clip
 
     #[ORM\OneToOne(targetEntity: Video::class)]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    #[Groups(['clip:read'])]
+    #[Groups(['video:read'])]
     private Video $originalVideo;
 
     #[ORM\Column(type: Types::STRING, nullable: true)]

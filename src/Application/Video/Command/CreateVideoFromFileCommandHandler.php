@@ -22,6 +22,7 @@ class CreateVideoFromFileCommandHandler
             originalName: $command->getOriginalName(),
             fileName: $command->getFileName(),
             format: $command->getFormat(),
+            size: $command->getSize(),
         );
 
         $this->videoRepository->save($video, true);

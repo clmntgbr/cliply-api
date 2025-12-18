@@ -22,6 +22,7 @@ class Video
     use TimestampableEntity;
 
     #[ORM\Column(type: Types::STRING, nullable: true)]
+    #[Groups(['video:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::STRING)]
@@ -29,15 +30,19 @@ class Video
     private string $originalName;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['video:read'])]
     private ?string $url = null;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[Groups(['video:read'])]
     private ?int $duration = null;
 
     #[ORM\Column(type: Types::INTEGER, nullable: true)]
+    #[Groups(['video:read'])]
     private ?int $size = null;
 
     #[ORM\Column(type: Types::STRING, nullable: true)]
+    #[Groups(['video:read'])]
     private ?string $format = null;
 
     public function __construct()
@@ -54,12 +59,13 @@ class Video
         return $video;
     }
 
-    public static function createFromFile(string $originalName, string $fileName, VideoFormat $format): self
+    public static function createFromFile(string $originalName, string $fileName, VideoFormat $format, int $size): self
     {
         $video = new self();
         $video->originalName = $originalName;
         $video->name = $fileName;
         $video->format = $format->value;
+        $video->size = $size;
 
         return $video;
     }
@@ -104,6 +110,27 @@ class Video
     public function setName(string $name): self
     {
         $this->name = $name;
+
+        return $this;
+    }
+
+    public function setDuration(int $duration): self
+    {
+        $this->duration = $duration;
+
+        return $this;
+    }
+
+    public function setSize(int $size): self
+    {
+        $this->size = $size;
+
+        return $this;
+    }
+
+    public function setOriginalName(string $originalName): self
+    {
+        $this->originalName = $originalName;
 
         return $this;
     }

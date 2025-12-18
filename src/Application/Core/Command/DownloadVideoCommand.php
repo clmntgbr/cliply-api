@@ -12,18 +12,12 @@ final readonly class DownloadVideoCommand implements AsynchronousInterface
 {
     public function __construct(
         public Uuid $clipId,
-        public string $url,
     ) {
     }
 
     public function getClipId(): Uuid
     {
         return $this->clipId;
-    }
-
-    public function getUrl(): string
-    {
-        return $this->url;
     }
 
     #[Override]

@@ -10,6 +10,9 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
+        webhook:
+            pattern: ^/webhook
+            security: false
         api:
             pattern: ^/api/
             lazy: true
@@ -33,6 +36,7 @@ security:
             logout:
                 path: app_logout
     access_control:
+        - { path: ^/webhook, roles: PUBLIC_ACCESS }
         - { path: ^/api/docs, roles: PUBLIC_ACCESS, methods: GET }
         - { path: ^/api/auth/login, roles: PUBLIC_ACCESS, methods: POST }
         - { path: ^/api/auth/register, roles: PUBLIC_ACCESS, methods: POST }

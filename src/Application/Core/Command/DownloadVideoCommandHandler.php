@@ -39,7 +39,7 @@ class DownloadVideoCommandHandler
             $this->coreBus->dispatch(new DownloadVideoMessage(
                 clipId: $clip->getId(),
                 videoId: $clip->getOriginalVideo()->getId(),
-                url: $command->getUrl(),
+                url: $clip->getOriginalVideo()->getUrl(),
             ));
         } catch (RuntimeException $e) {
             $clip->setStatus(ClipStatus::DOWNLOADING_FAILED);

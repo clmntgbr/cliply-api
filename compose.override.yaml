@@ -16,6 +16,7 @@ services:
       MERCURE_EXTRA_DIRECTIVES: demo
       XDEBUG_MODE: "${XDEBUG_MODE}"
       APP_ENV: "${APP_ENV}"
+      SERVER_NAME: "http://localhost"
     extra_hosts:
       - host.docker.internal:host-gateway
     tty: true

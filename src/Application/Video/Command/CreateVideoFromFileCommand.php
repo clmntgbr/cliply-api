@@ -12,6 +12,7 @@ final class CreateVideoFromFileCommand implements SynchronousInterface
     public function __construct(
         public string $originalName,
         public string $fileName,
+        public int $size,
         public VideoFormat $format,
     ) {
     }
@@ -29,5 +30,10 @@ final class CreateVideoFromFileCommand implements SynchronousInterface
     public function getFormat(): VideoFormat
     {
         return $this->format;
+    }
+
+    public function getSize(): int
+    {
+        return $this->size;
     }
 }
