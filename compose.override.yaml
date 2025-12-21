@@ -1,5 +1,5 @@
 ---
-# Development environment override
+# CI/Test environment override
 services:
   php:
     build:

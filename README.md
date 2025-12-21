@@ -74,6 +74,29 @@ make sh       # Access the PHP container
 make remove   # Remove containers and volumes
 ```
 
+### Docker Compose Files
+
+This project uses multiple Docker Compose files for different environments:
+
+- **`compose.yaml`** - Base configuration (required)
+- **`compose.override.yaml`** - Development & CI/Test environment (HTTP only, hot reload, XDebug)
+- **`compose.prod.yaml`** - Production environment (HTTPS, optimized)
+
+**Usage:**
+
+```bash
+# Development & CI/Test (HTTP only at http://localhost)
+docker compose up
+# or with Makefile:
+make up
+
+# Production
+docker compose -f compose.yaml -f compose.prod.yaml up
+```
+
+**Note:** By default, `docker compose up` (and `make up`) uses `compose.yaml` + `compose.override.yaml`.
+This configuration works for both local development and CI/CD with HTTP only for simplicity.
+
 For detailed setup instructions, see below.
 
 ### Prerequisites
@@ -110,8 +133,8 @@ For detailed setup instructions, see below.
 
 5. **Access the application**
    - HTTP: `http://localhost`
-   - HTTPS: `https://localhost`
-   - Mercure Hub: `https://localhost/.well-known/mercure`
+   - API Status: `http://localhost/api/status`
+   - Mercure Hub: `http://localhost/.well-known/mercure`
 
 6. **Stop the application**
    ```bash
