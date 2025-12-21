@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Presentation\Webhook\Core;
 
-use App\Domain\Core\Dto\DownloadVideoSuccess;
+use App\Domain\Core\Dto\ExtractSoundFailure;
 use Exception;
 use Override;
-use Psr\Log\LoggerInterface;
 use SensitiveParameter;
 use Symfony\Component\HttpFoundation\ChainRequestMatcher;
 use Symfony\Component\HttpFoundation\Exception\JsonException;
@@ -21,13 +20,12 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Webhook\Client\AbstractRequestParser;
 use Symfony\Component\Webhook\Exception\RejectWebhookException;
 
-final class DownloadVideoSuccessRequestParser extends AbstractRequestParser
+final class ExtractSoundFailureRequestParser extends AbstractRequestParser
 {
-    public const string WEBHOOK_NAME = 'downloadvideosuccess';
+    public const string WEBHOOK_NAME = 'extractsoundfailure';
 
     public function __construct(
         private readonly DenormalizerInterface $denormalizer,
-        private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -48,27 +46,17 @@ final class DownloadVideoSuccessRequestParser extends AbstractRequestParser
     {
         $authToken = $request->headers->get('X-Authentication-Token');
         if ($authToken !== $secret) {
-            $this->logger->error('Invalid authentication token.', [
-                'auth_token' => $authToken,
-                'secret' => $secret,
-            ]);
             throw new RejectWebhookException(Response::HTTP_UNAUTHORIZED, 'Invalid authentication token.');
         }
 
         if (! $request->getPayload()->has('video_id') || ! $request->getPayload()->has('clip_id')) {
-            $this->logger->error('Request payload does not contain required fields.', [
-                'payload' => $request->getPayload()->all(),
-            ]);
             throw new RejectWebhookException(Response::HTTP_BAD_REQUEST, 'Request payload does not contain required fields.');
         }
 
         try {
             $payload = $request->getPayload();
-            $data = $this->denormalizer->denormalize($payload->all(), DownloadVideoSuccess::class);
+            $data = $this->denormalizer->denormalize($payload->all(), ExtractSoundFailure::class);
         } catch (Exception) {
-            $this->logger->error('Invalid payload.', [
-                'payload' => $request->getPayload()->all(),
-            ]);
             throw new RejectWebhookException(Response::HTTP_BAD_REQUEST, 'Invalid payload');
         }
 

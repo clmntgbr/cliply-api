@@ -14,6 +14,7 @@ readonly class ExtractSoundMessage implements AsynchronousCoreInterface
     public function __construct(
         private Uuid $clipId,
         private Uuid $videoId,
+        private string $name,
     ) {
     }
 
@@ -27,6 +28,11 @@ readonly class ExtractSoundMessage implements AsynchronousCoreInterface
         return $this->videoId;
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
     /**
      * @return array<string, mixed>
      */
@@ -36,6 +42,7 @@ readonly class ExtractSoundMessage implements AsynchronousCoreInterface
         return [
             'clip_id' => (string) $this->clipId,
             'video_id' => (string) $this->videoId,
+            'name' => $this->name,
         ];
     }
 

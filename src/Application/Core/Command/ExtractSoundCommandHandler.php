@@ -39,6 +39,7 @@ class ExtractSoundCommandHandler
             $this->coreBus->dispatch(new ExtractSoundMessage(
                 clipId: $command->getClipId(),
                 videoId: $clip->getOriginalVideo()->getId(),
+                name: $clip->getOriginalVideo()->getName(),
             ));
         } catch (RuntimeException $e) {
             $clip->setStatus(ClipStatus::EXTRACTING_SOUND_FAILED);

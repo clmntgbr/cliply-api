@@ -6,15 +6,15 @@ namespace App\Application\Core\RemoteEvent;
 
 use App\Domain\Clip\Enum\ClipStatus;
 use App\Domain\Clip\Repository\ClipRepository;
-use App\Domain\Core\Dto\DownloadVideoFailure;
+use App\Domain\Core\Dto\ExtractSoundFailure;
 use Override;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\RemoteEvent\Attribute\AsRemoteEventConsumer;
 use Symfony\Component\RemoteEvent\Consumer\ConsumerInterface;
 use Symfony\Component\RemoteEvent\RemoteEvent;
 
-#[AsRemoteEventConsumer('downloadvideofailure')]
-final readonly class DownloadVideoFailureWebhookConsumer implements ConsumerInterface
+#[AsRemoteEventConsumer('extractsoundfailure')]
+final readonly class ExtractSoundFailureWebhookConsumer implements ConsumerInterface
 {
     public function __construct(
         private ClipRepository $clipRepository,
@@ -25,7 +25,7 @@ final readonly class DownloadVideoFailureWebhookConsumer implements ConsumerInte
     #[Override]
     public function consume(RemoteEvent $event): void
     {
-        /** @var DownloadVideoFailure $data */
+        /** @var ExtractSoundFailure $data */
         $data = $event->getPayload()['payload'];
 
         $clip = $this->clipRepository->findByUuid($data->getClipId());
@@ -38,7 +38,7 @@ final readonly class DownloadVideoFailureWebhookConsumer implements ConsumerInte
             return;
         }
 
-        $clip->setStatus(ClipStatus::DOWNLOADING_FAILED);
+        $clip->setStatus(ClipStatus::EXTRACTING_SOUND_FAILED);
         $this->clipRepository->save($clip);
     }
 }

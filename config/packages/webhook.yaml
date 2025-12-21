@@ -7,3 +7,9 @@ framework:
       downloadvideofailure:
         service: App\Presentation\Webhook\Core\DownloadVideoFailureRequestParser
         secret: '%env(CORE_TOKEN)%'
+      extractsoundsuccess:
+        service: App\Presentation\Webhook\Core\ExtractSoundSuccessRequestParser
+        secret: '%env(CORE_TOKEN)%'
+      extractsoundfailure:
+        service: App\Presentation\Webhook\Core\ExtractSoundFailureRequestParser
+        secret: '%env(CORE_TOKEN)%'

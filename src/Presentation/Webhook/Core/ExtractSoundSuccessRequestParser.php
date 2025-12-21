@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presentation\Webhook\Core;
 
-use App\Domain\Core\Dto\DownloadVideoSuccess;
+use App\Domain\Core\Dto\ExtractSoundSuccess;
 use Exception;
 use Override;
 use Psr\Log\LoggerInterface;
@@ -21,9 +21,9 @@ use Symfony\Component\Serializer\Normalizer\DenormalizerInterface;
 use Symfony\Component\Webhook\Client\AbstractRequestParser;
 use Symfony\Component\Webhook\Exception\RejectWebhookException;
 
-final class DownloadVideoSuccessRequestParser extends AbstractRequestParser
+final class ExtractSoundSuccessRequestParser extends AbstractRequestParser
 {
-    public const string WEBHOOK_NAME = 'downloadvideosuccess';
+    public const string WEBHOOK_NAME = 'extractsoundsuccess';
 
     public function __construct(
         private readonly DenormalizerInterface $denormalizer,
@@ -64,7 +64,7 @@ final class DownloadVideoSuccessRequestParser extends AbstractRequestParser
 
         try {
             $payload = $request->getPayload();
-            $data = $this->denormalizer->denormalize($payload->all(), DownloadVideoSuccess::class);
+            $data = $this->denormalizer->denormalize($payload->all(), ExtractSoundSuccess::class);
         } catch (Exception) {
             $this->logger->error('Invalid payload.', [
                 'payload' => $request->getPayload()->all(),

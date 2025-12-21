@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Application\Core\RemoteEvent;
 
-use App\Application\Core\Command\ExtractSoundCommand;
 use App\Domain\Clip\Enum\ClipStatus;
 use App\Domain\Clip\Repository\ClipRepository;
-use App\Domain\Core\Dto\DownloadVideoSuccess;
-use App\Shared\Application\Bus\CommandBusInterface;
+use App\Domain\Core\Dto\ExtractSoundSuccess;
 use App\Shared\Infrastructure\Workflow\WorkflowInterface;
 use Override;
 use Psr\Log\LoggerInterface;
@@ -18,21 +16,20 @@ use Symfony\Component\RemoteEvent\Attribute\AsRemoteEventConsumer;
 use Symfony\Component\RemoteEvent\Consumer\ConsumerInterface;
 use Symfony\Component\RemoteEvent\RemoteEvent;
 
-#[AsRemoteEventConsumer('downloadvideosuccess')]
-final readonly class DownloadVideoSuccessWebhookConsumer implements ConsumerInterface
+#[AsRemoteEventConsumer('extractsoundsuccess')]
+final readonly class ExtractSoundSuccessWebhookConsumer implements ConsumerInterface
 {
     public function __construct(
         private ClipRepository $clipRepository,
         private LoggerInterface $logger,
         private WorkflowInterface $workflow,
-        private CommandBusInterface $commandBus,
     ) {
     }
 
     #[Override]
     public function consume(RemoteEvent $event): void
     {
-        /** @var DownloadVideoSuccess $data */
+        /** @var ExtractSoundSuccess $data */
         $data = $event->getPayload()['payload'];
 
         $clip = $this->clipRepository->findByUuid($data->getClipId());
@@ -64,23 +61,16 @@ final readonly class DownloadVideoSuccessWebhookConsumer implements ConsumerInte
 
         $video = $clip->getOriginalVideo();
 
-        $video->setSize($data->getSize());
-        $video->setFormat($data->getFormat());
-        $video->setName($data->getName());
-        $video->setOriginalName($data->getOriginalFileName());
+        $video->setDuration($data->getDuration());
+        $video->setAudioFiles($data->getAudioFiles());
 
         try {
-            $this->workflow->apply($clip, 'downloading_completed');
-            $this->workflow->apply($clip, 'processing');
+            $this->workflow->apply($clip, 'extracting_sound_completed');
         } catch (RuntimeException $e) {
-            $clip->setStatus(ClipStatus::DOWNLOADING_FAILED);
+            $clip->setStatus(ClipStatus::EXTRACTING_SOUND_FAILED);
             throw new UnrecoverableMessageHandlingException($e->getMessage());
         } finally {
             $this->clipRepository->save($clip);
         }
-
-        $this->commandBus->dispatch(new ExtractSoundCommand(
-            clipId: $clip->getId(),
-        ));
     }
 }

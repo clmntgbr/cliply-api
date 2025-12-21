@@ -45,6 +45,12 @@ class Video
     #[Groups(['video:read'])]
     private ?string $format = null;
 
+    /**
+     * @var array<int, string>
+     */
+    #[ORM\Column(type: Types::JSON, nullable: true)]
+    private array $audioFiles = [];
+
     public function __construct()
     {
         $this->id = Uuid::v7();
@@ -131,6 +137,24 @@ class Video
     public function setOriginalName(string $originalName): self
     {
         $this->originalName = $originalName;
+
+        return $this;
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    public function getAudioFiles(): array
+    {
+        return $this->audioFiles;
+    }
+
+    /**
+     * @param array<int, string> $audioFiles
+     */
+    public function setAudioFiles(array $audioFiles): self
+    {
+        $this->audioFiles = $audioFiles;
 
         return $this;
     }

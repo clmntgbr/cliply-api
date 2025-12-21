@@ -7,9 +7,12 @@ namespace App\Domain\User\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\Post;
+use App\Domain\Clip\Entity\Clip;
 use App\Domain\User\Repository\UserRepository;
 use App\Presentation\Controller\User\RegisterController;
 use App\Shared\Domain\Trait\UuidTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
@@ -69,9 +72,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     private ?string $plainPassword = null;
 
+    /**
+     * @var Collection<int, Clip>
+     */
+    #[ORM\OneToMany(targetEntity: Clip::class, mappedBy: 'user')]
+    #[Groups(['user:read'])]
+    private Collection $clips;
+
     public function __construct()
     {
         $this->id = Uuid::v7();
+        $this->clips = new ArrayCollection();
     }
 
     public static function create(
@@ -231,5 +242,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->picture = $picture;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Clip>
+     */
+    public function getClips(): Collection
+    {
+        return $this->clips;
     }
 }

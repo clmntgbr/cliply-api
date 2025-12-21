@@ -7,10 +7,12 @@ namespace App\Application\Clip\Command;
 use App\Domain\Clip\Enum\VideoFormat;
 use App\Shared\Application\Command\SynchronousInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Uid\Uuid;
 
 final class CreateClipFromFileCommand implements SynchronousInterface
 {
     public function __construct(
+        public Uuid $userId,
         public UploadedFile $video,
         public UploadedFile $thumbnail,
         public VideoFormat $format,
@@ -36,5 +38,10 @@ final class CreateClipFromFileCommand implements SynchronousInterface
     public function getThumbnail(): UploadedFile
     {
         return $this->thumbnail;
+    }
+
+    public function getUserId(): Uuid
+    {
+        return $this->userId;
     }
 }

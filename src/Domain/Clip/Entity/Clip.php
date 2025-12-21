@@ -10,6 +10,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Post;
 use App\Domain\Clip\Enum\ClipStatus;
 use App\Domain\Clip\Repository\ClipRepository;
+use App\Domain\User\Entity\User;
 use App\Domain\Video\Entity\Video;
 use App\Presentation\Controller\Clip\CreateClipFromFileController;
 use App\Presentation\Controller\Clip\CreateClipFromUrlController;
@@ -57,6 +58,11 @@ class Clip
     #[Groups(['clip:read'])]
     private string $status;
 
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[Groups(['clip:read'])]
+    private User $user;
+
     /**
      * @var list<string>
      */
@@ -75,14 +81,14 @@ class Clip
         return $this->id;
     }
 
-    public static function createFromUrl(): self
+    public static function createFromUrl(User $user): self
     {
-        return self::create();
+        return self::create($user);
     }
 
-    public static function createFromFile(): self
+    public static function createFromFile(User $user): self
     {
-        return self::create();
+        return self::create($user);
     }
 
     public function getStatus(): ClipStatus
@@ -131,12 +137,25 @@ class Clip
         return $this->statuses;
     }
 
-    private static function create(): self
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    private static function create(User $user): self
     {
         $clip = new self();
 
         $clip->status = ClipStatus::DRAFT->value;
         $clip->statuses[] = ClipStatus::DRAFT->value;
+        $clip->user = $user;
 
         return $clip;
     }

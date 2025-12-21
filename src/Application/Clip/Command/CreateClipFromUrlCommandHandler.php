@@ -9,10 +9,12 @@ use App\Application\Storage\Command\UploadThumbnailCommand;
 use App\Application\Video\Command\CreateVideoFromUrlCommand;
 use App\Domain\Clip\Entity\Clip;
 use App\Domain\Clip\Repository\ClipRepository;
+use App\Domain\User\Repository\UserRepository;
 use App\Domain\Video\Entity\Video;
 use App\Shared\Application\Bus\CommandBusInterface;
 use App\Shared\Utils\ConvertBase64ToFile;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 
 #[AsMessageHandler]
 class CreateClipFromUrlCommandHandler
@@ -20,12 +22,18 @@ class CreateClipFromUrlCommandHandler
     public function __construct(
         private readonly CommandBusInterface $commandBus,
         private readonly ClipRepository $clipRepository,
+        private readonly UserRepository $userRepository,
     ) {
     }
 
     public function __invoke(CreateClipFromUrlCommand $command): Clip
     {
-        $clip = Clip::createFromUrl();
+        $user = $this->userRepository->findByUuid($command->getUserId());
+        if (null === $user) {
+            throw new UnrecoverableMessageHandlingException('User not found');
+        }
+
+        $clip = Clip::createFromUrl($user);
 
         $thumbnailFileName = $this->commandBus->dispatch(new UploadThumbnailCommand(
             clipId: $clip->getId(),

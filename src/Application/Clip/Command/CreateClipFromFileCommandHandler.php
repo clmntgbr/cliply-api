@@ -10,10 +10,12 @@ use App\Application\Storage\Command\UploadVideoCommand;
 use App\Application\Video\Command\CreateVideoFromFileCommand;
 use App\Domain\Clip\Entity\Clip;
 use App\Domain\Clip\Repository\ClipRepository;
+use App\Domain\User\Repository\UserRepository;
 use App\Domain\Video\Entity\Video;
 use App\Shared\Application\Bus\CommandBusInterface;
 use App\Shared\Infrastructure\Workflow\WorkflowInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 
 #[AsMessageHandler]
 class CreateClipFromFileCommandHandler
@@ -22,12 +24,18 @@ class CreateClipFromFileCommandHandler
         private readonly CommandBusInterface $commandBus,
         private readonly ClipRepository $clipRepository,
         private readonly WorkflowInterface $workflow,
+        private readonly UserRepository $userRepository,
     ) {
     }
 
     public function __invoke(CreateClipFromFileCommand $command): Clip
     {
-        $clip = Clip::createFromFile();
+        $user = $this->userRepository->findByUuid($command->getUserId());
+        if (null === $user) {
+            throw new UnrecoverableMessageHandlingException('User not found');
+        }
+
+        $clip = Clip::createFromFile($user);
 
         $videoFileName = $this->commandBus->dispatch(new UploadVideoCommand(
             clipId: $clip->getId(),
