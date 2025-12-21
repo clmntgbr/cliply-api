@@ -58,7 +58,7 @@ class Clip
     #[Groups(['clip:read'])]
     private string $status;
 
-    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'clips')]
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[Groups(['clip:read'])]
     private User $user;

@@ -49,6 +49,7 @@ class Video
      * @var array<int, string>
      */
     #[ORM\Column(type: Types::JSON, nullable: true)]
+    #[Groups(['video:read'])]
     private array $audioFiles = [];
 
     public function __construct()
