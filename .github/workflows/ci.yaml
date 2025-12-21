@@ -49,7 +49,7 @@ jobs:
         if: false # Self-signed certificates for localhost are not properly configured in CI
         run: curl -v --insecure --fail-with-body https://localhost/api/status
       - name: Check Mercure reachability
-        run: curl -vI --insecure --fail-with-body https://localhost/.well-known/mercure?topic=test
+        run: curl -vI --fail-with-body http://localhost/.well-known/mercure?topic=test
       - name: Create test database
         run: docker compose exec -T php bin/console -e test doctrine:database:create
       - name: Run migrations
