@@ -30,7 +30,9 @@ readonly class TranscriptAudioMessage implements AsynchronousCoreInterface
         return [
             'clip_id' => (string) $this->clip->getId(),
             'video_id' => (string) $this->clip->getOriginalVideo()->getId(),
-            'audios' => $this->clip->getOriginalVideo()->getAudioFiles(),
+            'audio_files' => $this->clip->getOriginalVideo()->getAudioFiles(),
+            'is_fake' => true,
+            'language' => 'fr',
         ];
     }
 

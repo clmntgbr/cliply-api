@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Application\Core\RemoteEvent;
 
+use App\Domain\Clip\Enum\ClipStatus;
 use App\Domain\Clip\Repository\ClipRepository;
 use App\Domain\Core\Dto\TranscriptAudioSuccess;
+use App\Shared\Infrastructure\Workflow\WorkflowInterface;
 use Override;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
+use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use Symfony\Component\RemoteEvent\Attribute\AsRemoteEventConsumer;
 use Symfony\Component\RemoteEvent\Consumer\ConsumerInterface;
 use Symfony\Component\RemoteEvent\RemoteEvent;
@@ -18,6 +22,7 @@ final readonly class TranscriptAudioSuccessWebhookConsumer implements ConsumerIn
     public function __construct(
         private ClipRepository $clipRepository,
         private LoggerInterface $logger,
+        private WorkflowInterface $workflow,
     ) {
     }
 
@@ -54,6 +59,17 @@ final readonly class TranscriptAudioSuccessWebhookConsumer implements ConsumerIn
             return;
         }
 
-        $clip->getOriginalVideo();
+        $video = $clip->getOriginalVideo();
+
+        $video->setSubtitleSrtName($data->getSubtitleSrtName());
+
+        try {
+            $this->workflow->apply($clip, 'transcribing_audio_completed');
+        } catch (RuntimeException $e) {
+            $clip->setStatus(ClipStatus::TRANSCRIBING_AUDIO_FAILED);
+            throw new UnrecoverableMessageHandlingException($e->getMessage());
+        } finally {
+            $this->clipRepository->save($clip);
+        }
     }
 }

@@ -66,6 +66,11 @@ entity: ## Create a new entity
 schema: ## Update database schema
 	@$(PHP_CONT) bin/console doctrine:schema:update --force
 
+migration:
+	@$(PHP_CONT) bin/console doctrine:migration:diff
+	@$(PHP_CONT) bin/console doctrine:migration:migrate --no-interaction
+	
+
 rector: ## Run rector
 	@$(PHP_CONT) composer rector-fix
 

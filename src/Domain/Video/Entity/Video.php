@@ -45,6 +45,10 @@ class Video
     #[Groups(['video:read'])]
     private ?string $format = null;
 
+    #[ORM\Column(type: Types::STRING, nullable: true)]
+    #[Groups(['video:read'])]
+    private ?string $subtitleSrtName = null;
+
     /**
      * @var array<int, string>
      */
@@ -156,6 +160,18 @@ class Video
     public function setAudioFiles(array $audioFiles): self
     {
         $this->audioFiles = $audioFiles;
+
+        return $this;
+    }
+
+    public function getSubtitleSrtName(): ?string
+    {
+        return $this->subtitleSrtName;
+    }
+
+    public function setSubtitleSrtName(string $subtitleSrtName): self
+    {
+        $this->subtitleSrtName = $subtitleSrtName;
 
         return $this;
     }

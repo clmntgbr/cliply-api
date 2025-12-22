@@ -21,6 +21,11 @@ readonly class TranscriptAudioSuccess
         #[Assert\Uuid]
         #[Assert\Length(max: 36)]
         private readonly Uuid $videoId,
+        #[SerializedName('subtitle_srt_name')]
+        #[Assert\NotBlank]
+        #[Assert\Type(type: 'string')]
+        #[Assert\Length(max: 255)]
+        private readonly string $subtitleSrtName,
     ) {
     }
 
@@ -32,5 +37,10 @@ readonly class TranscriptAudioSuccess
     public function getVideoId(): Uuid
     {
         return $this->videoId;
+    }
+
+    public function getSubtitleSrtName(): string
+    {
+        return $this->subtitleSrtName;
     }
 }
