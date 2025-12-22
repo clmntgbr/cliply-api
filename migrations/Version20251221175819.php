@@ -8,18 +8,18 @@ use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
 
 /**
- * Auto-generated Migration: Please modify to your needs!
+ * Create clip, user and video tables.
  */
 final class Version20251221175819 extends AbstractMigration
 {
     public function getDescription(): string
     {
-        return '';
+        return 'Create clip, user and video tables';
     }
 
     public function up(Schema $schema): void
     {
-        // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('CREATE SCHEMA public');
         $this->addSql('CREATE TABLE clip (thumbnail VARCHAR(255) DEFAULT NULL, status VARCHAR(255) NOT NULL, statuses JSON NOT NULL, id UUID NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, original_video_id UUID NOT NULL, user_id UUID NOT NULL, PRIMARY KEY (id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_AD201467A9EE75F ON clip (original_video_id)');
         $this->addSql('CREATE INDEX IDX_AD201467A76ED395 ON clip (user_id)');
@@ -32,7 +32,6 @@ final class Version20251221175819 extends AbstractMigration
 
     public function down(Schema $schema): void
     {
-        // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('ALTER TABLE clip DROP CONSTRAINT FK_AD201467A9EE75F');
         $this->addSql('ALTER TABLE clip DROP CONSTRAINT FK_AD201467A76ED395');
         $this->addSql('DROP TABLE clip');
