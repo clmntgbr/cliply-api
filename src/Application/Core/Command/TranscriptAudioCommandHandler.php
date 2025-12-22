@@ -23,7 +23,7 @@ class TranscriptAudioCommandHandler
         private readonly CoreBusInterface $coreBus,
         private readonly ClipRepository $clipRepository,
         private readonly WorkflowInterface $workflow,
-        #[Autowire('%ACTIVATE_TRANSCRIBING_AUDIO%')]
+        #[Autowire('%env(ACTIVATE_TRANSCRIBING_AUDIO)%')]
         private readonly bool $activateTranscribingAudio,
     ) {
     }
