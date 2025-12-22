@@ -20,6 +20,10 @@ framework:
                 - extracting_sound_failed
                 - extracting_sound_completed
 
+                - transcribing_audio
+                - transcribing_audio_failed
+                - transcribing_audio_completed
+
             transitions:
                 downloading:
                     from: draft
@@ -47,3 +51,13 @@ framework:
                 extracting_sound_completed:
                     from: extracting_sound
                     to:   extracting_sound_completed
+
+                transcribing_audio:
+                    from: extracting_sound_completed
+                    to:   transcribing_audio
+                transcribing_audio_failed:
+                    from: transcribing_audio
+                    to:   transcribing_audio_failed
+                transcribing_audio_completed:
+                    from: transcribing_audio
+                    to:   transcribing_audio_completed

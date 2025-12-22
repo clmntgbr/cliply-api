@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Core\Command;
 
-use App\Application\Core\Message\ExtractSoundMessage;
+use App\Application\Core\Message\TranscriptAudioMessage;
 use App\Domain\Clip\Enum\ClipStatus;
 use App\Domain\Clip\Repository\ClipRepository;
 use App\Shared\Application\Bus\CoreBusInterface;
@@ -16,7 +16,7 @@ use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 use function sprintf;
 
 #[AsMessageHandler]
-class ExtractSoundCommandHandler
+class TranscriptAudioCommandHandler
 {
     public function __construct(
         private readonly CoreBusInterface $coreBus,
@@ -25,7 +25,7 @@ class ExtractSoundCommandHandler
     ) {
     }
 
-    public function __invoke(ExtractSoundCommand $command): void
+    public function __invoke(TranscriptAudioCommand $command): void
     {
         $clip = $this->clipRepository->findByUuid($command->getClipId());
 
@@ -34,13 +34,13 @@ class ExtractSoundCommandHandler
         }
 
         try {
-            $this->workflow->apply($clip, 'extracting_sound');
+            $this->workflow->apply($clip, 'transcribing_audio');
 
-            $this->coreBus->dispatch(new ExtractSoundMessage(
+            $this->coreBus->dispatch(new TranscriptAudioMessage(
                 clip: $clip,
             ));
         } catch (RuntimeException $e) {
-            $clip->setStatus(ClipStatus::EXTRACTING_SOUND_FAILED);
+            $clip->setStatus(ClipStatus::TRANSCRIBING_AUDIO_FAILED);
             throw new UnrecoverableMessageHandlingException($e->getMessage());
         } finally {
             $this->clipRepository->save($clip);

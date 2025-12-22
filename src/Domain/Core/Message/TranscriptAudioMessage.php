@@ -9,7 +9,7 @@ use App\Shared\Application\Command\AsynchronousCoreInterface;
 use Override;
 use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
 
-readonly class ExtractSoundMessage implements AsynchronousCoreInterface
+readonly class TranscriptAudioMessage implements AsynchronousCoreInterface
 {
     public function __construct(
         private Clip $clip,
@@ -30,7 +30,7 @@ readonly class ExtractSoundMessage implements AsynchronousCoreInterface
         return [
             'clip_id' => (string) $this->clip->getId(),
             'video_id' => (string) $this->clip->getOriginalVideo()->getId(),
-            'name' => $this->clip->getOriginalVideo()->getName(),
+            'audios' => $this->clip->getOriginalVideo()->getAudioFiles(),
         ];
     }
 
@@ -41,19 +41,19 @@ readonly class ExtractSoundMessage implements AsynchronousCoreInterface
     public function getStamps(): array
     {
         return [
-            new AmqpStamp('core.extract_sound'),
+            new AmqpStamp('core.transcript_audio'),
         ];
     }
 
     #[Override]
     public function getWebhookUrlSuccess(): string
     {
-        return 'webhook/extractsoundsuccess';
+        return 'webhook/transcriptaudiosuccess';
     }
 
     #[Override]
     public function getWebhookUrlFailure(): string
     {
-        return 'webhook/extractsoundfailure';
+        return 'webhook/transcriptaudiofailure';
     }
 }

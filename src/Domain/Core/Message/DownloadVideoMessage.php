@@ -4,33 +4,21 @@ declare(strict_types=1);
 
 namespace App\Application\Core\Message;
 
+use App\Domain\Clip\Entity\Clip;
 use App\Shared\Application\Command\AsynchronousCoreInterface;
 use Override;
 use Symfony\Component\Messenger\Bridge\Amqp\Transport\AmqpStamp;
-use Symfony\Component\Uid\Uuid;
 
 readonly class DownloadVideoMessage implements AsynchronousCoreInterface
 {
     public function __construct(
-        private Uuid $clipId,
-        private Uuid $videoId,
-        private string $url,
+        private Clip $clip,
     ) {
     }
 
-    public function getClipId(): Uuid
+    public function getClip(): Clip
     {
-        return $this->clipId;
-    }
-
-    public function getVideoId(): Uuid
-    {
-        return $this->videoId;
-    }
-
-    public function getUrl(): string
-    {
-        return $this->url;
+        return $this->clip;
     }
 
     /**
@@ -40,9 +28,9 @@ readonly class DownloadVideoMessage implements AsynchronousCoreInterface
     public function jsonSerialize(): array
     {
         return [
-            'clip_id' => (string) $this->clipId,
-            'video_id' => (string) $this->videoId,
-            'url' => $this->url,
+            'clip_id' => (string) $this->clip->getId(),
+            'video_id' => (string) $this->clip->getOriginalVideo()->getId(),
+            'url' => $this->clip->getOriginalVideo()->getUrl(),
         ];
     }
 

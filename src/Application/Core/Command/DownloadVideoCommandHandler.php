@@ -37,9 +37,7 @@ class DownloadVideoCommandHandler
             $this->workflow->apply($clip, 'downloading');
 
             $this->coreBus->dispatch(new DownloadVideoMessage(
-                clipId: $clip->getId(),
-                videoId: $clip->getOriginalVideo()->getId(),
-                url: $clip->getOriginalVideo()->getUrl(),
+                clip: $clip,
             ));
         } catch (RuntimeException $e) {
             $clip->setStatus(ClipStatus::DOWNLOADING_FAILED);

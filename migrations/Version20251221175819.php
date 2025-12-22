@@ -19,7 +19,6 @@ final class Version20251221175819 extends AbstractMigration
 
     public function up(Schema $schema): void
     {
-        $this->addSql('CREATE SCHEMA public');
         $this->addSql('CREATE TABLE clip (thumbnail VARCHAR(255) DEFAULT NULL, status VARCHAR(255) NOT NULL, statuses JSON NOT NULL, id UUID NOT NULL, created_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, updated_at TIMESTAMP(0) WITHOUT TIME ZONE NOT NULL, original_video_id UUID NOT NULL, user_id UUID NOT NULL, PRIMARY KEY (id))');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_AD201467A9EE75F ON clip (original_video_id)');
         $this->addSql('CREATE INDEX IDX_AD201467A76ED395 ON clip (user_id)');

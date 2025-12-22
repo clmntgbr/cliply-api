@@ -13,3 +13,9 @@ framework:
       extractsoundfailure:
         service: App\Presentation\Webhook\Core\ExtractSoundFailureRequestParser
         secret: '%env(CORE_TOKEN)%'
+      transcriptaudiosuccess:
+        service: App\Presentation\Webhook\Core\TranscriptAudioSuccessRequestParser
+        secret: '%env(CORE_TOKEN)%'
+      transcriptaudiofailure:
+        service: App\Presentation\Webhook\Core\TranscriptAudioFailureRequestParser
+        secret: '%env(CORE_TOKEN)%'

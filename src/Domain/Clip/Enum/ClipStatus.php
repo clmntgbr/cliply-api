@@ -16,4 +16,8 @@ enum ClipStatus: string
     case EXTRACTING_SOUND = 'extracting_sound';
     case EXTRACTING_SOUND_FAILED = 'extracting_sound_failed';
     case EXTRACTING_SOUND_COMPLETED = 'extracting_sound_completed';
+
+    case TRANSCRIBING_AUDIO = 'transcribing_audio';
+    case TRANSCRIBING_AUDIO_FAILED = 'transcribing_audio_failed';
+    case TRANSCRIBING_AUDIO_COMPLETED = 'transcribing_audio_completed';
 }

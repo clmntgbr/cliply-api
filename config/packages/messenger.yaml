@@ -65,6 +65,8 @@ framework:
                             binding_keys: [core.download_video]
                         core.extract_sound:
                             binding_keys: [core.extract_sound]
+                        core.transcript_audio:
+                            binding_keys: [core.transcript_audio]
                 retry_strategy:
                     max_retries: 0
 
