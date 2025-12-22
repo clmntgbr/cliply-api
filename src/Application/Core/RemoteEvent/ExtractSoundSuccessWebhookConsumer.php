@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Application\Core\RemoteEvent;
 
+use App\Application\Core\Command\TranscriptAudioCommand;
 use App\Domain\Clip\Enum\ClipStatus;
 use App\Domain\Clip\Repository\ClipRepository;
 use App\Domain\Core\Dto\ExtractSoundSuccess;
+use App\Shared\Application\Bus\CommandBusInterface;
 use App\Shared\Infrastructure\Workflow\WorkflowInterface;
 use Override;
 use Psr\Log\LoggerInterface;
@@ -22,6 +24,7 @@ final readonly class ExtractSoundSuccessWebhookConsumer implements ConsumerInter
     public function __construct(
         private ClipRepository $clipRepository,
         private LoggerInterface $logger,
+        private CommandBusInterface $commandBus,
         private WorkflowInterface $workflow,
     ) {
     }
@@ -72,5 +75,9 @@ final readonly class ExtractSoundSuccessWebhookConsumer implements ConsumerInter
         } finally {
             $this->clipRepository->save($clip);
         }
+
+        $this->commandBus->dispatch(new TranscriptAudioCommand(
+            clipId: $clip->getId(),
+        ));
     }
 }
