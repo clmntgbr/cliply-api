@@ -10,6 +10,7 @@ use App\Domain\Clip\Repository\ClipRepository;
 use App\Shared\Application\Bus\CoreBusInterface;
 use App\Shared\Infrastructure\Workflow\WorkflowInterface;
 use RuntimeException;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\Exception\UnrecoverableMessageHandlingException;
 
@@ -22,6 +23,8 @@ class TranscriptAudioCommandHandler
         private readonly CoreBusInterface $coreBus,
         private readonly ClipRepository $clipRepository,
         private readonly WorkflowInterface $workflow,
+        #[Autowire('%ACTIVATE_TRANSCRIBING_AUDIO%')]
+        private readonly bool $activateTranscribingAudio,
     ) {
     }
 
@@ -38,6 +41,7 @@ class TranscriptAudioCommandHandler
 
             $this->coreBus->dispatch(new TranscriptAudioMessage(
                 clip: $clip,
+                activateTranscribingAudio: $this->activateTranscribingAudio,
             ));
         } catch (RuntimeException $e) {
             $clip->setStatus(ClipStatus::TRANSCRIBING_AUDIO_FAILED);

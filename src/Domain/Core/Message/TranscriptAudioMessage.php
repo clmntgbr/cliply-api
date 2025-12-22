@@ -13,6 +13,7 @@ readonly class TranscriptAudioMessage implements AsynchronousCoreInterface
 {
     public function __construct(
         private Clip $clip,
+        private bool $activateTranscribingAudio,
     ) {
     }
 
@@ -31,8 +32,8 @@ readonly class TranscriptAudioMessage implements AsynchronousCoreInterface
             'clip_id' => (string) $this->clip->getId(),
             'video_id' => (string) $this->clip->getOriginalVideo()->getId(),
             'audio_files' => $this->clip->getOriginalVideo()->getAudioFiles(),
-            'is_fake' => true,
             'language' => 'fr',
+            'activate_transcribing_audio' => $this->activateTranscribingAudio,
         ];
     }
 
